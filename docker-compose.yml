@@ -1,0 +1,14 @@
+services:
+  leafmap:
+    image: mambaorg/micromamba:1.5
+    container_name: leafmap
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./work:/work
+    working_dir: /work
+    command: >
+      bash -lc "set -e;
+      micromamba create -y -n geo -c conda-forge python=3.11;
+      micromamba install -y -n geo -c conda-forge leafmap jupyterlab ipywidgets localtileserver geopandas rasterio pyproj shapely;
+      exec micromamba run -n geo python -m jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --ServerApp.token='' --ServerApp.password='' --ServerApp.allow_root=True"
